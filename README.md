@@ -50,10 +50,10 @@ Why it matters?
 Energy consumption follows distinct daily, weekly, and seasonal patterns. Extracting temporal features helps the model capture these cyclical behaviors in a much coherant way.
 
 This python code tell us about the engineering step
-# Convert to datetime format
+ Convert to datetime format
 df['date'] = pd.to_datetime(df['date'], format='%m/%d/%Y %H:%M')
 
-# Extract temporal features
+ Extract temporal features
 df['hour'] = df['date'].dt.hour                    # 0-23
 df['day_of_week'] = df['date'].dt.day_name()      # Monday, Tuesday, etc.
 df['month'] = df['date'].dt.month                 # 1-12
@@ -87,9 +87,9 @@ Why it matters?
 Creating a binary classification target enables both regression (predicting energy usage) and classification (identifying high consumption events) tasks.
 python
 
-# Calculate 75th percentile threshold
+ Calculate 75th percentile threshold
 percentile_75 = df['Usage_kWh'].quantile(0.75)
-# Create binary feature
+ Create binary feature
 df['High_Load'] = (df['Usage_kWh'] > percentile_75).astype(int)
 Business Applications:
 Anomaly Detection: Flag unusual consumption events as observed in dataset
