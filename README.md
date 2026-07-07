@@ -217,7 +217,7 @@ Indicates power quality issues during high consumption
 
 # Results and Conclusions
 
-1) The steel industry energy consumption prediction project successfully demonstrated a complete machine learning workflow, achieving strong predictive performance with the Random Forest Regressor emerging as the best model with a test RMSE of 7.23 kWh, R² score of 0.872, and MAE of 5.42 kWh, outperforming Linear Regression (RMSE: 8.54), Ridge Regression (RMSE: 8.51), and Decision Tree (RMSE: 7.89) models. 
+1) The steel industry energy consumption prediction project successfully demonstrated a complete machine learning workflow, achieving strong predictive performance with the Random Forest Regressor emerging as the best model with a test RMSE of 7.23 kWh, R² score of 0.872, and MAE of 5.42 kWh, outperforming Linear Regression (RMSE: 8.54), Ridge Regression (RMSE: 8.51), and Decision Tree (RMSE: 7.89) models. link:https://github.com/HASEEB99999/Week2-Task/blob/main/image%202.jpg
 
 2) Through comprehensive exploratory data analysis on 35,040 records spanning one year, we discovered that energy consumption follows distinct diurnal patterns with peak usage at noon (40.2 kWh) and trough at midnight (18.7 kWh), while Maximum Load conditions consume 3.5 times more energy than Light Load (45.31 kWh vs 13.04 kWh). Feature engineering proved critical, as extracting temporal features (hour, day_of_week, month, is_weekend), creating Power Factor Ratio, and developing High_Load binary indicator improved model performance by up to 9.4%. 
 
