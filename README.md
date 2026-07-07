@@ -190,27 +190,27 @@ link: https://github.com/HASEEB99999/Week2-Task/blob/main/image%201.jpg
 
 ## Correlation Heatmap
 Key Observations:
-CO2.tCO2 is almost perfectly correlated with Usage_kWh (0.999)
+* CO2.tCO2 is almost perfectly correlated with Usage_kWh (0.999)
   
 Dropped from modeling to prevent target leakage
   
-Indicates energy consumption directly drives emissions
-Reactive Power has very strong correlation (0.965)
-Industrial motors and inductive loads consume reactive power
+* Indicates energy consumption directly drives emissions
+* Reactive Power has very strong correlation (0.965)
+* Industrial motors and inductive loads consume reactive power
 
 ## Key feature for predicting energy usage
-NSM shows moderate correlation (0.497)
+* NSM shows moderate correlation (0.497)
   
-Non-sinusoidal current increases with higher loads
+* Non-sinusoidal current increases with higher loads
   
-Indicates power quality issues during high consumption
+* Indicates power quality issues during high consumption
 
 ## Temporal features 
- Hour: -0.103 (weak)
+* Hour: -0.103 (weak)
   
- Month: 0.039 (very weak)
+* Month: 0.039 (very weak)
   
- Suggests non-linear temporal patterns
+* Suggests non-linear temporal patterns
 
 *****************************************************************************************************************************************
 
