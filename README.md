@@ -185,7 +185,8 @@ Outlier Statistics:
 - Std Dev: 13.25 kWh
 - Min: 64.00 kWh
 - Max: 167.10 kWh
-  image attatched in the folder (image 1)
+
+link: https://github.com/HASEEB99999/Week2-Task/blob/main/image%201.jpg
 
 ## Correlation Heatmap
 Key Observations:
