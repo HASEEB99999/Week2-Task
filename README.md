@@ -1,9 +1,13 @@
-# Week2-Task
-Deep Exploratory Analysis, Feature Engineering & Baseline Modeling
+# ITSIMPLERA SOLUTION
+# AI/ML INTERNSHIP 2026
+# Week 2 - Task
+*****************************************************************************************************************************************
+# Deep Exploratory Analysis, Feature Engineering & Baseline Modeling
+### Steel Industry Energy Consumption - Machine Learning Project
+*****************************************************************************************************************************************
+ 
 
-# Steel Industry Energy Consumption - Machine Learning Project
-
-## Project Overview
+## 1) Project Overview
 
 This project expilicitly implements a complete and comprehensive machine learning workflow for predicting energy consumption in a steel manufacturing plant. The project is divided into two main parts:
 
@@ -12,7 +16,9 @@ This project expilicitly implements a complete and comprehensive machine learnin
 
 The project show a real-world machine learning pipeline from data exploration to model selection, suitable for energy optimization and predictive maintenance in industrial settings like in Steel Industry Energy Consumption industry.
 
-##  Dataset Information
+*****************************************************************************************************************************************
+
+## 2)  Dataset Information
 
 **Source**: UCI Machine Learning Repository  
 **Dataset Name**: Steel Industry Energy Consumption Dataset  
@@ -30,108 +36,143 @@ The project show a real-world machine learning pipeline from data exploration to
   - `Load_Type`: Categorical (Light, Medium, Maximum Load)
   - `WeekStatus`: Weekend/Weekday
   - `Day_of_week`: Day name
-  - 
- ### Target Variable
-- **Usage_kWh**: Energy consumption to be predicted
   
-##  Environment Setup
+ **Target Variable :**
+- **Usage_kWh**: Energy consumption to be predicted
+
+****************************************************************************************************************************************
+  
+## 3)  Environment Setup
 
 ### Prerequisites
 - Python 3.8+
 - Google Colab or Jupyter Notebook or VS Code 
 - Required libraries (check the requirements.txt)
+****************************************************************************************************************************************
   
-### Feature engineering steps
-Feature Engineering Steps
+## 4)  Feature Engineering Steps
+### Feature engineering is the process of creating new features from existing data to improve model performance. Below are the comprehensive steps performed in this project, along with the reasoning behind each transformation.
+Let us explore the main steps!
 
-Feature engineering is the process of creating new features from existing data to improve model performance. Below are the comprehensive steps performed in this project, along with the reasoning behind each transformation. Let us explore the main steps.
-
-Why it matters?
+### Why it matters?
 Energy consumption follows distinct daily, weekly, and seasonal patterns. Extracting temporal features helps the model capture these cyclical behaviors in a much coherant way.
 
 This python code tell us about the engineering step
- Convert to datetime format
+
+### I) Convertion to datetime format
+
 df['date'] = pd.to_datetime(df['date'], format='%m/%d/%Y %H:%M')
 
- Extract temporal features
-df['hour'] = df['date'].dt.hour                    # 0-23
-df['day_of_week'] = df['date'].dt.day_name()      # Monday, Tuesday, etc.
-df['month'] = df['date'].dt.month                 # 1-12
-df['is_weekend'] = df['date'].dt.dayofweek.isin([5, 6]).astype(int)  # 1=weekend, 0=weekday
+### Extract temporal features
+df['hour'] = df['date'].dt.hour                                           
+#### feature 1:  0-23
 
-2. Power Factor Ratio
+df['day_of_week'] = df['date'].dt.day_name()                             
+#### feature 2:  Monday, Tuesday, etc
 
-Why it matters?
+df['month'] = df['date'].dt.month                                         
+#### feature 3:   1-12
+
+df['is_weekend'] = df['date'].dt.dayofweek.isin([5, 6]).astype(int)      
+#### feature 4:  1=weekend, 0=weekday
+
+### II) Power Factor Ratio
+
+### Why it matters?
 The power factor indicates how effectively electrical power is being used in the industry. The ratio between leading and lagging power factors reveals the phase relationship between current and voltage, which can indicate power quality issues in form of sinusidal wave.
+
+Formula:
 Power_Factor_Ratio = (Leading_PF + ε) / (Lagging_PF + ε)
 
 epsilon = 1e-10  # Small constant to prevent division by zero, it is neceassary step
+
 df['Power_Factor_Ratio'] = (df['Leading_Current_Power_Factor'] + epsilon) / 
                            (df['Lagging_Current_Power_Factor'] + epsilon)
 
- if ratio value > 1 it is a leading PF dominates and its implication indicate a Capacitive load,possible over-correction
- if ratio value = 1 it is a balanced PF and its implication indicate optimal power quality 
- if ratio value < 1 it is lagging PF dominates and its implication state an inductive load, typicall in industrial motors
- if ratio value ~ 0 its a near zero leading PF and its implication state it as minimal leading PF contribution
+ #### if ratio value > 1 it is a leading PF dominates and its implication indicate a Capacitive load,possible over-correction
+ 
+ #### if ratio value = 1 it is a balanced PF and its implication indicate optimal power quality
+ 
+ #### if ratio value < 1 it is lagging PF dominates and its implication state an inductive load, typicall in industrial motors
+ 
+ #### if ratio value ~ 0 its a near zero leading PF and its implication state it as minimal leading PF contribution
 
- Business Value/Insights:
- Power Quality Monitoring: Identifies when power factor correction is needed
- Efficiency Optimization: Poor power factor leads to higher energy costs
-  Equipment Health: Significant changes may indicate equipment issues
+ ### Business Value/Insights:
+ * Power Quality Monitoring: Identifies when power factor correction is needed
+   
+ * Efficiency Optimization: Poor power factor leads to higher energy costs
+   
+ * Equipment Health: Significant changes may indicate equipment issues
 
-Observation: The ratio ranges from 0 to 0.345, indicating the plant operates primarily with lagging power factor. This is expected in industrial settings with many inductive motors.
+### Observation: The ratio ranges from 0 to 0.345, indicating the plant operates primarily with lagging power factor. This is expected in industrial settings with many inductive motors.
 
-3. High Load Binary Feature
+## III) High Load Binary Feature
 
-Why it matters?
+### Why it matters?
 Creating a binary classification target enables both regression (predicting energy usage) and classification (identifying high consumption events) tasks.
-python
 
- Calculate 75th percentile threshold
+##### Calculating 75th percentile threshold
 percentile_75 = df['Usage_kWh'].quantile(0.75)
- Create binary feature
+
+##### Create binary feature
 df['High_Load'] = (df['Usage_kWh'] > percentile_75).astype(int)
-Business Applications:
+
+### Business Applications:
 Anomaly Detection: Flag unusual consumption events as observed in dataset
 Predictive Maintenance: High loads may indicate equipment stress in dataset
 Demand Response: Identify peak demand periods for load shedding as in percentile
 Cost Optimization: High consumption events often incur premium pricing, observed vividly
 
-4. Feature Importance (After Modeling)
+## IV) Feature Importance (After Modeling)
 The Random Forest model revealed the most important features for prediction:
-python
-# Feature importance from trained Random Forest
+
+### Feature importance from trained Random Forest
 feature_importance = pd.DataFrame({
     'Feature': X.columns,
     'Importance': model.feature_importances_
 }).sort_values('Importance', ascending=False)
 
-# EDA FINDINGS
-Basic Statistics:
-Total Records: 35,040 (1 year of 10-minute interval data)
-Time Period: January 1, 2017 to January 1, 2018
-Total Features: 11 (original) → 18 (after feature engineering)
-Data Completeness: 100% (no missing values)
-Duplicates: 0 (clean dataset)
+*****************************************************************************************************************************************
 
-Missing Values:
+# EDA FINDINGS
+#### Basic Statistics:
+#### Total Records: 35,040 (1 year of 10-minute interval data)
+#### Time Period: January 1, 2017 to January 1, 2018
+#### Total Features: 11 (original) → 18 (after feature engineering)
+#### Data Completeness: 100% (no missing values)
+#### Duplications: 0 (clean dataset)
+
+## Missing Values:
+
 Missing Values Check:
+
 ✅ No missing values found in any column
+
 ✅ All 35,040 records are complete
+
 ✅ Dataset is ready for analysis
 
-Duplicate Record:
+## Duplicate Record:
+
 Duplicate Check:
+
 ✅ 0 duplicate rows found
+
 ✅ All records are unique
+
 ✅ No data redundancy issues
 
-Outlier Detection:
-findings/observation
+## Outlier Detection:
+
+#### findings/observation
 Q1 (25th percentile) = 9.10 kWh
+
 Q3 (75th percentile) = 31.00 kWh
+
 IQR = Q3 - Q1 = 21.90 kWh
+
 Lower Bound = Q1 - 1.5*IQR = -23.75 kWh
+
 Upper Bound = Q3 + 1.5*IQR = 63.85 kWh
 
 Outliers Found: 1,061 records (3.03%)
@@ -146,26 +187,34 @@ Outlier Statistics:
 - Max: 167.10 kWh
   image attatched in the folder (image 1)
 
-  # Correlation Heatmap
-  Key Observations:
-  CO2.tCO2 is almost perfectly correlated with Usage_kWh (0.999)
-  Dropped from modeling to prevent target leakage
-  Indicates energy consumption directly drives emissions
-  Reactive Power has very strong correlation (0.965)
-  Industrial motors and inductive loads consume reactive power
+## Correlation Heatmap
+Key Observations:
+CO2.tCO2 is almost perfectly correlated with Usage_kWh (0.999)
+  
+Dropped from modeling to prevent target leakage
+  
+Indicates energy consumption directly drives emissions
+Reactive Power has very strong correlation (0.965)
+Industrial motors and inductive loads consume reactive power
 
-   Key feature for predicting energy usage
-   NSM shows moderate correlation (0.497)
-   Non-sinusoidal current increases with higher loads
-   Indicates power quality issues during high consumption
+## Key feature for predicting energy usage
+NSM shows moderate correlation (0.497)
+  
+Non-sinusoidal current increases with higher loads
+  
+Indicates power quality issues during high consumption
 
-   Temporal features show weak linear correlation
-     Hour: -0.103 (weak)
-    Month: 0.039 (very weak)
-    Suggests non-linear temporal patterns
+## Temporal features 
+ Hour: -0.103 (weak)
+  
+ Month: 0.039 (very weak)
+  
+ Suggests non-linear temporal patterns
+
+*****************************************************************************************************************************************
 
 
-  # Results and Conclusions
+# Results and Conclusions
 
 1) The steel industry energy consumption prediction project successfully demonstrated a complete machine learning workflow, achieving strong predictive performance with the Random Forest Regressor emerging as the best model with a test RMSE of 7.23 kWh, R² score of 0.872, and MAE of 5.42 kWh, outperforming Linear Regression (RMSE: 8.54), Ridge Regression (RMSE: 8.51), and Decision Tree (RMSE: 7.89) models. 
 
